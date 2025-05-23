@@ -1,0 +1,47 @@
+# Questão 6
+
+import requests
+import json
+import matplotlib.pyplot as plt
+
+##1
+
+def buscar_cidade():
+  try:
+    city = input('digite o nome da cidade (no Brasil): ')
+    api_key = "e0b01da9367d25fb28b8c2fd3518b544"
+    url = f"http://api.openweathermap.org/geo/1.0/direct?q={city},076&limit=1&appid={api_key}"
+    response = requests.get(url)
+    lat = response.json()[0]["lat"]
+    lon = response.json()[0]["lon"]
+    return lat, lon
+  except:
+    print('digite uma cidade válida')
+    return buscar_cidade()
+
+
+lat, lon = buscar_cidade()
+api_key = "e0b01da9367d25fb28b8c2fd3518b544"
+
+
+url2 = f'https://api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid={api_key}&units=metric&lang=pt_br'
+response2 = requests.get(url2)
+
+temp1 = response2.json()["list"][0]["main"]["temp"]
+temp2 = response2.json()["list"][1]["main"]["temp"]
+temp3 = response2.json()["list"][2]["main"]["temp"]
+temp4 = response2.json()["list"][3]["main"]["temp"]
+temp5 = response2.json()["list"][4]["main"]["temp"]
+
+temperaturas = [temp1, temp2, temp3, temp4, temp5]
+
+
+##2
+
+plt.plot([0, 3, 6, 9, 12], temperaturas, marker='o', linestyle='-', color='b')  # 'o' é o marcador de círculo, '-' linha sólida, 'b' cor azul
+plt.title('Temperatura nas próximas horas')
+plt.xlabel('Próximas horas')
+plt.ylabel('Temperatura (°C)')
+plt.grid(True)
+plt.show()
+
