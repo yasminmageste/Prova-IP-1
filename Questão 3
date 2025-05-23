@@ -1,0 +1,124 @@
+# Questão 3
+import pandas as pd
+import numpy as np
+import random
+
+# gerando os dados de maneira aleatória
+lista = []
+for i in range(30):
+  n = random.randint(10,30)
+  lista.append(n)
+print(lista)
+
+##a
+arr = np.array(lista)
+media = np.mean(arr)
+mediana = np.median(arr)
+desvio_padrao = np.std(arr)
+variancia = np.var(arr)
+
+print()
+print(f'a média das temperaturas desse mês foi de {media:.2f} graus')
+print(f'a mediana das temperaturas desse mês foi de {mediana} graus')
+print(f'o desvio padrão das temperaturas desse mês foi de {desvio_padrao:.2f} graus')
+print(f'o índice de variação termica média desse mês foi de {variancia:.2f} graus')
+
+##b
+print()
+data = {}
+df = pd.DataFrame(data)
+df['dia'] = range(1,31)
+df['temperaturas'] = lista
+diferenca = []
+for i in lista:
+  n = i - media
+  diferenca.append(n)
+df['diferença para a média'] = diferenca
+
+## c
+classificacao = []
+for i in lista:
+  if i < 18:
+    classificacao.append('frio')
+  elif 18<=i<=25:
+    classificacao.append('agradável')
+  else:
+    classificacao.append('quente')
+df['classificação'] = classificacao
+print(df)
+
+
+##d
+###i
+f = 0
+a = 0
+q = 0
+for i in classificacao:
+  if i =='frio':
+    f+=1
+  elif i == 'agradável':
+    a+=1
+  else:
+    q+=1
+print()
+print(f'nesse mês houve {f} dias frios, {a} dias agradáveis e {q} dias quentes')
+print()
+
+###ii
+maiores = sorted(lista, reverse = True)[:5]
+menores = sorted(lista)[:5]
+
+dias_mais_quentes = []
+for i in maiores:
+  for x in range(len(lista)):
+    if i == lista[x] and x+1 not in dias_mais_quentes:
+      dias_mais_quentes.append(x+1)
+
+dias_mais_frios = []
+for i in menores:
+  for x in range(len(lista)):
+    if i == lista[x] and x+1 not in dias_mais_frios:
+      dias_mais_frios.append(x+1)
+
+print('os dias mais quentes desse mês foram:')
+for y in dias_mais_quentes:
+  print(y)
+
+print()
+print('os dias mais frios desse mês foram')
+for y in dias_mais_frios:
+  print(y)
+
+print()
+###iii
+frios_acima_da_media = 0
+quentes_abaixo_da_media = 0
+for dia in dias_mais_quentes:
+  if df['diferença para a média'][dia-1] > 0:
+    print(f'o dia {dia} foi acima da média mensal')
+  elif df['diferença para a média'][dia-1] < 0:
+    print(f'o dia {dia} foi abaixo da média mensal')
+    quentes_abaixo_da_media +=1
+  else:
+    print(f'o dia {dia} ficou exatamente na média')
+
+for dia in dias_mais_frios:
+  if df['diferença para a média'][dia-1] > 0:
+    print(f'o dia {dia} foi acima da média mensal')
+    frios_acima_da_media +=1
+  elif df['diferença para a média'][dia-1] < 0:
+    print(f'o dia {dia} foi abaixo da média mensal')
+  else:
+    print(f'o dia {dia} ficou exatamente na média')
+
+### iv
+print()
+if frios_acima_da_media > 0:
+  print('nesse mês houve dias frios acima da média de temperatura')
+else:
+  print('nesse mês não houve dias frios acima da média de temperatura')
+
+if quentes_abaixo_da_media > 0:
+  print('nesse mês houve dias quentes abaixo da média de temperatura')
+else:
+  print('nesse mês não houve dias quentes abaixo da média de temperatura')
