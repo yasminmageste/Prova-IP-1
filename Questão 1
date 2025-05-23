@@ -1,1 +1,22 @@
+# Questão 1
+
+##a
+pot = float(input('Qual a potência do aparelho? (em kW) '))
+horas = float(input('Qual o tempo médio diário de uso do aparelho? (em horas) '))
+
+##b
+while pot <= 0:
+  print('A potência deve ser maior que zero.')
+  pot = float(input('Qual a potência do aparelho? (em kW) '))
+
+while horas <= 0:
+  print('O tempo médio deve ser maior que zero.')
+  horas = float(input('Qual o tempo médio diário de uso do aparelho? (em horas) '))
+
+##c
+def calcular_consumo_mensal(pot, horas):
+  consumo = pot * horas * 30
+  return consumo
+
+print(f'o consumo mensal estimado é de {calcular_consumo_mensal(pot, horas)} kWh')
 
