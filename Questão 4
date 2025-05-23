@@ -1,0 +1,190 @@
+# Questão 4 - parte 1
+
+import pandas as pd
+import random
+
+quadro = {'a': ['.', '.', '.', '.', '.', '.', '.', '.'],
+          'b': ['.', '.', '.', '.', '.', '.', '.', '.'],
+          'c': ['.', '.', '.', '.', '.', '.', '.', '.'],
+          'd': ['.', '.', '.', '.', '.', '.', '.', '.'],
+          'e': ['.', '.', '.', '.', '.', '.', '.', '.'],
+          'f': ['.', '.', '.', '.', '.', '.', '.', '.'],
+          'g': ['.', '.', '.', '.', '.', '.', '.', '.']}
+
+normal = ['.', '.', '.', '.', '.', '.', '.']
+completo = ['[]', '[]', '[]', '[]', '[]', '[]', '[]']
+marcar = ['X', 'X', 'X', 'X', 'X', 'X', 'X']
+
+conferir = [7, 6, 5, 4, 3, 2, 1, 0]
+
+perdeu = False
+
+pontos = 0
+
+def finalizar(i):
+  if i >= 2:
+    df.loc[0, ['c', 'd']] = ['.', '.']
+    df.loc[1, ['c', 'd']] = ['.', '.']
+    print(df)
+  else:
+    print(df)
+
+df = pd.DataFrame(quadro)
+print(df)
+p = random.randint(1,5)
+
+def direcao():
+  user = input('digite a letra para onde o canto esquerdo da peça deve ir: (ex: a) ')
+  if user == 'a':
+    x = 'a'
+    y = 'b'
+  elif user == 'b':
+    x = 'b'
+    y = 'c'
+  elif user == 'c':
+    x = 'c'
+    y = 'd'
+  elif user == 'd':
+    x = 'd'
+    y = 'e'
+  elif user == 'e':
+    x = 'e'
+    y = 'f'
+  elif user == 'f':
+    x = 'f'
+    y = 'g'
+  else:
+    print('digite uma letra válida')
+    x, y = direcao()
+  return x, y
+
+def peca1():
+  #quadrado
+  if (df.loc[0, ['c', 'd']] == ['.', '.']).all() and (df.loc[1, ['c', 'd']] == ['.', '.']).all() :
+    df.loc[0, ['c', 'd']] = ['[]', '[]']
+    df.loc[1, ['c', 'd']] = ['[]', '[]']
+    print(df)
+    x, y = direcao()
+    for i in conferir:
+     if i > 0 and (df.loc[i-1, [x, y]] == ['.', '.']).all() and (df.loc[i, [x, y]] == ['.', '.']).all():
+            df.loc[i-1, [x, y]] = ['[]', '[]']
+            df.loc[i, [x, y]] = ['[]', '[]']
+            print(i)
+            finalizar(i)
+            break
+  else:
+    print('você perdeu =(')
+    return True
+
+
+
+def peca2():
+  #[]
+  #[] []
+  if (df.loc[0, ['c', 'd']] == ['.', '.']).all() and (df.loc[1, ['c', 'd']] == ['.', '.']).all() :
+    df.loc[0, ['c', 'd']] = ['[]', '.']
+    df.loc[1, ['c', 'd']] = ['[]', '[]']
+    print(df)
+    x, y = direcao()
+    for i in conferir:
+     if i > 0 and (df.loc[i-1, [x]] == ['.']).all() and (df.loc[i, [x, y]] == ['.', '.']).all():
+            df.loc[i-1, [x]] = ['[]']
+            df.loc[i, [x, y]] = ['[]', '[]']
+            print(i)
+            finalizar(i)
+            break
+  else:
+    print('você perdeu =(')
+    return True
+
+
+
+def peca3():
+  # .[]
+  #[][]
+  if (df.loc[0, ['c', 'd']] == ['.', '.']).all() and (df.loc[1, ['c', 'd']] == ['.', '.']).all() :
+    df.loc[0, ['c', 'd']] = ['.', '[]']
+    df.loc[1, ['c', 'd']] = ['[]', '[]']
+    print(df)
+    x, y = direcao()
+    for i in conferir:
+     if i > 0 and (df.loc[i-1, [y]] == ['.']).all() and (df.loc[i, [x, y]] == ['.', '.']).all():
+            df.loc[i-1, [y]] = ['[]']
+            df.loc[i, [x, y]] = ['[]', '[]']
+            print(i)
+            finalizar(i)
+            break
+  else:
+    print('você perdeu =(')
+    return True
+
+
+def peca4():
+  #[][]
+  #[]
+  if (df.loc[0, ['c', 'd']] == ['.', '.']).all() and (df.loc[1, ['c', 'd']] == ['.', '.']).all() :
+    df.loc[0, ['c', 'd']] = ['[]', '[]']
+    df.loc[1, ['c', 'd']] = ['[]', '.']
+    print(df)
+    x, y = direcao()
+    for i in conferir:
+     if i > 0 and (df.loc[i-1, [x, y]] == ['.', '.']).all() and (df.loc[i, [x]] == ['.']).all():
+            df.loc[i-1, [x, y]] = ['[]', '[]']
+            df.loc[i, [x]] = ['[]']
+            print(i)
+            finalizar(i)
+            break
+  else:
+    print('você perdeu =(')
+    return True
+
+
+def peca5():
+  #[][]
+  #. []
+  if (df.loc[0, ['c', 'd']] == ['.', '.']).all() and (df.loc[1, ['c', 'd']] == ['.', '.']).all() :
+    df.loc[0, ['c', 'd']] = ['[]', '[]']
+    df.loc[1, ['c', 'd']] = ['.', '[]']
+    print(df)
+    x, y = direcao()
+    for i in conferir:
+     if i > 0 and (df.loc[i-1, [x, y]] == ['.', '.']).all() and (df.loc[i, [y]] == ['.']).all():
+            df.loc[i-1, [x, y]] = ['[]', '[]']
+            df.loc[i, [y]] = ['[]']
+            print(i)
+            finalizar(i)
+            break
+
+  else:
+    print('você perdeu =(')
+    return True
+
+# Questão 4 - parte 2
+
+while pontos < 5 or perdeu == False:
+  p = random.randint(1,5)
+  if p == 1:
+    perdeu = peca1()
+  elif p == 2:
+    perdeu = peca2()
+  elif p == 3:
+    perdeu = peca3()
+  elif p == 4:
+    perdeu = peca4()
+  elif p == 5:
+    perdeu = peca5()
+  if perdeu == True:
+    break
+  for i in conferir:
+    if (df.loc[i]  == completo).all():
+      pontos += 1
+      df.loc[i] = marcar
+      print('Você marcou um ponto =)')
+      print(df)
+      df.loc[i] = normal
+      df.loc[0] = normal
+      for k in range(i, 0, -1):
+        df.loc[k] = df.loc[k-1]
+
+if pontos == 5:
+  print('Você venceu')
