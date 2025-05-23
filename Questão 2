@@ -1,1 +1,88 @@
+# Questão 2
+import pandas as pd
+metas = {}
+df1 = pd.DataFrame(metas)
 
+## a
+def adicionar_metas(x):
+ df1[x] = [float(input(f'Qual a meta de {x}? (em reais) '))]
+
+meta = input('deseja adicionar alguma meta para alguma categoria]? (s/n)')
+while meta.lower() == 's':
+  y = input('Qual o nome da meta? ')
+  adicionar_metas(y)
+  meta = input('deseja adicionar mais alguma meta? ')
+
+print()
+print(df1)
+print()
+
+##b
+lancamentos = int(input('Quantos lançamentos finançeiros deseja registrar? '))
+
+gastos = {}
+df2 = pd.DataFrame(gastos)
+
+##c
+categorias = []
+valores = []
+total = 0
+indice = 0
+for i in range(lancamentos):
+  descricao = input(f'Qual a descrição do lançamento {i+1}? ')
+  valor = float(input(f'Qual o valor do lançamento {i+1}? '))
+  valores.append(valor)
+  total += valor
+  categoria = input(f'Qual a categoria do lançamento {i+1}? ')
+  categorias.append(categoria)
+
+dados_lancamentos = {'Categoria': categorias, 'Valor': valores}
+
+
+df2 = pd.DataFrame(dados_lancamentos)
+
+print()
+print(df2)
+
+a ={}
+t2 = pd.DataFrame(a)
+tipos = []
+
+for i in categorias:
+  if i not in tipos:
+    tipos.append(i)
+
+for t in tipos:
+  contador = 0
+  for i in categorias:
+    if i == t:
+      contador += 1
+
+  t2[t] = [contador, 0]
+
+for i in range(lancamentos):
+  for t in tipos:
+    if categorias[i] == t:
+      t2.loc[1, t] += valores[i]
+
+##d
+print()
+print(f'o total gasto no mês foi de {total} reais')
+for i in t2:
+  print(f'o gasto total na categoria {i} foi de {t2[i][1]} reais')
+  print(f'a média de gastos para a categoria {i} foi de {t2[i][1]/t2[i][0]}')
+
+v = []
+for i in t2.loc[1]:
+  v.append(i)
+
+n = 0
+for i in range(len(v)):
+  if v[i] == max(v):
+    n = i
+print(f'a categoria com maior gasto foi {tipos[n]}')
+for i in t2:
+  for x in df1:
+    if x == i:
+      razao = t2[i][1]/df1[x][0]
+      print(f'o valor gasto na categoria {i}, foi de {razao*100}% em relação a meta')
